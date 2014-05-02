@@ -21,8 +21,8 @@
 </div>
 
 <div class="grid">
-  <div ng-repeat="r in rows">
-    <span ng-repeat="cell in r" ng-click="toggle($parent.$index,$index)" ng-class="{alive:cell.alive}" >&nbsp;</span>
+  <div ng-repeat="r in rows track by $index">
+    <span ng-repeat="cell in r track by $index" ng-click="toggle($parent.$index,$index)" ng-class="{alive:cell.alive}" >&nbsp;</span>
   </div>
 </div>
 <button class="btn" ng-click="step();">step</button>
