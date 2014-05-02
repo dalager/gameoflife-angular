@@ -1,5 +1,35 @@
 'use strict';
 
+
+
+var ConwayRuleEngine = function(){
+};
+ConwayRuleEngine.prototype.shouldCellChange = function(i,j,cell,neighbours){
+	// 4. Any dead cell with exactly three live neighbours 
+	//    becomes a live cell, as if by reproduction.
+	if(neighbours===3 && cell.alive!==true){
+		//$log.info('LIFE!')
+		return {'row':i,'cell':j,alive:true};
+	}
+	// rules
+	// 1. Any live cell with fewer than two live neighbours dies
+	//    as if caused by under-population.
+	if(cell.alive===true && neighbours < 2){
+		return {'row':i,'cell':j,alive:false};
+	}
+
+	//2. Any live cell with two or three live neighbours 
+	//   lives on to the next generation.
+	if(cell.alive===true && neighbours===2||neighbours===3){
+		return null;
+	}
+	// 3. Any live cell with more than three live neighbours dies, 
+	//    as if by overcrowding.
+	if(cell.alive===true && neighbours > 3){
+		return {'row':i,'cell':j,alive:false};
+	}
+};
+	
 angular.module('angularconwayApp')
   .controller('MainCtrl', function ($scope,$log,$interval) {
 	$scope.seedpct = 64;
@@ -14,7 +44,7 @@ angular.module('angularconwayApp')
 			}
 		}
 	};
-
+	var ruleEngine;
 	var seed = function(){
 		$scope.rows =[];
 		var gridsize = 80;
@@ -25,6 +55,7 @@ angular.module('angularconwayApp')
 			}
 			$scope.rows.push(row);
 		}
+		ruleEngine=new ConwayRuleEngine();
 	};
 
 	seed();
@@ -78,30 +109,7 @@ angular.module('angularconwayApp')
 	var shouldCellChange = function(i,j,grid){
 		var cell = grid[i][j];
 		var	neighbours = getLiveNeighbours(i,j,grid);
-		
-		// 4. Any dead cell with exactly three live neighbours 
-		//    becomes a live cell, as if by reproduction.
-		if(neighbours===3 && cell.alive!==true){
-			//$log.info('LIFE!')
-			return {'row':i,'cell':j,alive:true};
-		}
-		// rules
-		// 1. Any live cell with fewer than two live neighbours dies
-		//    as if caused by under-population.
-		if(cell.alive===true && neighbours < 2){
-			return {'row':i,'cell':j,alive:false};
-		}
-		
-		//2. Any live cell with two or three live neighbours 
-		//   lives on to the next generation.
-		if(cell.alive===true && neighbours===2||neighbours===3){
-			return null;
-		}
-		// 3. Any live cell with more than three live neighbours dies, 
-		//    as if by overcrowding.
-		if(cell.alive===true && neighbours > 3){
-			return {'row':i,'cell':j,alive:false};
-		}
+		return ruleEngine.shouldCellChange(i,j,cell,neighbours);
 	};
 
 	var process = function(){
