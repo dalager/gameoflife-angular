@@ -1,5 +1,6 @@
-.grid{margin-top:10px;border:1px solid #ccc;width:802px;}
+.grid{margin-top:10px;border:1px solid #ccc;width:802px;cursor: default;}
 .grid div{display: table;}
+
 
 .grid div span{float:left; background-color:#efe;display: inline-block;
  width: 8px;height: 8px;}

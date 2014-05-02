@@ -110,9 +110,12 @@ angular.module('angularconwayApp')
 		return changeCount;
 	};
 
-
-	$scope.showneighbours = function(row,cell){
-		$log.info(getLiveNeighbours(row,cell));
+	var toggleCell = function(row,cell){
+		$scope.rows[row][cell].alive = !$scope.rows[row][cell].alive;
+	};
+	$scope.toggle = function(row,cell){
+		toggleCell(row,cell);
+//		$log.info(getLiveNeighbours(row,cell));
 	};
 
 	var stop;

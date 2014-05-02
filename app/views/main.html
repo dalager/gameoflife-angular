@@ -19,7 +19,7 @@
 
 <div class="grid">
   <div ng-repeat="r in rows">
-    <span ng-repeat="cell in r" ng-click="showneighbours($parent.$index,$index)" ng-class="{alive:cell.alive}" >&nbsp;</span>
+    <span ng-repeat="cell in r" ng-click="toggle($parent.$index,$index)" ng-class="{alive:cell.alive}" >&nbsp;</span>
   </div>
 </div>
 
