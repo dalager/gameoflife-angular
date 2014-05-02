@@ -81,8 +81,8 @@ angular.module('angularconwayApp')
 		
 		// 4. Any dead cell with exactly three live neighbours 
 		//    becomes a live cell, as if by reproduction.
-		if(neighbours===3 && cell.alive!=true){
-			$log.info('LIFE!')
+		if(neighbours===3 && cell.alive!==true){
+			//$log.info('LIFE!')
 			return {'row':i,'cell':j,alive:true};
 		}
 		// rules
@@ -102,11 +102,6 @@ angular.module('angularconwayApp')
 		if(cell.alive===true && neighbours > 3){
 			return {'row':i,'cell':j,alive:false};
 		}
-
-		$log.info('NOTHING HAPPENED:')
-		$log.info('Neighbours: '+neighbours);
-		$log.info('Cell alive: '+cell.alive);
-		
 	};
 
 	var process = function(){
@@ -117,17 +112,18 @@ angular.module('angularconwayApp')
 		for(var i=0; i < grid.length; i++){
 			for(var j=0; j < grid[i].length;j++){
 				var result = shouldCellChange(i,j,grid);
-				if(result)
+				if(result){
 					changelist.push(result);
+				}
 			}
 		}
-		$log.info('changelist: '+changelist.length);
+		//$log.info('changelist: '+changelist.length);
 		
 		for(var n=0; n < changelist.length; n++){
 			toggleCell(changelist[n].row,changelist[n].cell);
 		}
 		
-		$log.info('change count: '+changelist.length);
+		//$log.info('change count: '+changelist.length);
 		if(changelist.length>80){
 			$scope.iterations++;
 		}
@@ -146,8 +142,7 @@ angular.module('angularconwayApp')
 
 	$scope.showNeighbours = function(row,cell){
 		$log.info('neighbours: '+getLiveNeighbours(row,cell,$scope.rows));
-
-	}
+	};
 
 	var stop;
 	$scope.start = function(completed) {
@@ -160,7 +155,7 @@ angular.module('angularconwayApp')
 				$scope.runlog.push({seedpct:$scope.seedpct,iterations:$scope.iterations});
 				if(completed){completed();}
 			}
-		}, 400);
+		}, 200);
 		$log.info('started');
 	};
 
