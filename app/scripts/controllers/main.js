@@ -26,9 +26,8 @@ angular.module('angularconwayApp')
 	};
 
 	seed();
-	var getLiveNeighbours = function(row,cell){
+	var getLiveNeighbours = function(row,cell,rows){
 		var count=0;
-		var rows =$scope.rows;
 		var notFirstCol=cell>0;
 		var notLastCol = cell<rows[0].length-1;
 
@@ -71,35 +70,42 @@ angular.module('angularconwayApp')
 		return count;
 	};
 
+
 	var process = function(){
 		$log.info('processing');
 		var changeCount = 0;
-		for(var i=0; i < $scope.rows.length; i++){
-			for(var j=0; j < $scope.rows[i].length;j++){
-				var cell = $scope.rows[i][j];
-				var	neighbours = getLiveNeighbours(i,j);
+		var clone = $scope.rows.slice(0);
+		
+		for(var i=0; i < clone.length; i++){
+			for(var j=0; j < clone[i].length;j++){
+				var cell = clone[i][j];
+				var	neighbours = getLiveNeighbours(i,j,clone);
 				// rules
-				// 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+				// 1. Any live cell with fewer than two live neighbours dies
+				//    as if caused by under-population.
 				if(cell.alive && neighbours<2){
-					cell.alive=false;
+					$scope.rows[i][j].alive=false;
 					changeCount++;
 					continue;
 				}
-				//2. Any live cell with two or three live neighbours lives on to the next generation.
+				//2. Any live cell with two or three live neighbours 
+				//   lives on to the next generation.
 				if(cell.alive && neighbours===2||neighbours===3){
 					continue;
 				}
 
-				// 3. Any live cell with more than three live neighbours dies, as if by overcrowding.
+				// 3. Any live cell with more than three live neighbours dies, 
+				//    as if by overcrowding.
 				if(cell.alive && neighbours > 3){
-					cell.alive=false;
+					$scope.rows[i][j].alive=false;
 					changeCount++;
 					continue;
 				}
 
-				// 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+				// 4. Any dead cell with exactly three live neighbours 
+				//    becomes a live cell, as if by reproduction.
 				if(!cell.alive && neighbours===3){
-					cell.alive=true;
+					$scope.rows[i][j].alive=true;
 					changeCount++;
 				}
 			}
@@ -111,7 +117,7 @@ angular.module('angularconwayApp')
 	};
 
 	var toggleCell = function(row,cell){
-		$scope.rows[row][cell].alive = !$scope.rows[row][cell].alive;
+		$scope.rows[row][cell].alive = !$scope.rows[row][cell].alive;	
 	};
 	$scope.toggle = function(row,cell){
 		toggleCell(row,cell);
