@@ -2,13 +2,16 @@
   <h3 class="text-muted">Game of Conway's Supposedly Angular Life</h3>
 </div>
 <div class="row">
-  <div class="col-md-4"><button class="btn btn-primary" ng-click="start()">Start</button>
+  <div class="col-md-3"><button class="btn btn-primary" ng-click="start()">Start</button>
     <button class="btn btn-warning" ng-click="stop()">Stop</button>
     <button class="btn btn-success" ng-click="restart()">Restart</button>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-6">
+    <p>You can manually toggle the liveliness of individual cells - even during execution.<br>After all, playing God is the main driver here.</p>
+  </div>
+  <div class="col-md-3">
     <div class="row">
-      <div class="col-xs-5"><label>Seed pct:</label></div>
+      <div class="col-xs-5"><label title="Seed pct determines how many cells will be alive after restart. ">Seed pct:</label></div>
     </div>
     <div class="row">
      <div class="col-xs-3"><input class="form-control" ng-model="seedpct"></div>
