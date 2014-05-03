@@ -15,6 +15,10 @@ ConwayGrid.prototype.initialize=function(seedPct){
 	}
 };
 
+ConwayGrid.prototype.toggleCell = function(rowindex,cellindex){
+	this.rows[rowindex][cellindex].alive = !this.rows[rowindex][cellindex].alive;
+}
+
 ConwayGrid.prototype.reseed = function(seedpct){
 	for(var i=0;i<this.rows.length;i++){
 		for(var j=0;j<this.rows[i].length;j++){

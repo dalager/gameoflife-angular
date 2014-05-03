@@ -50,7 +50,7 @@ angular.module('angularconwayApp')
 
 	var toggleCell = function(row,cell){
 		//$log.info('toggle '+row + ' '+cell);
-		$scope.grid.rows[row][cell].alive = !$scope.grid.rows[row][cell].alive;
+		$scope.grid.toggleCell(row,cell);
 	};
 
 	$scope.toggle = function(row,cell){
