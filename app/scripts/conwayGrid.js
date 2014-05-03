@@ -3,6 +3,7 @@
 var ConwayGrid = function(size){
 	this.size = size;
 	this.rows=[];
+	this.ruleEngine = new ConwayRuleEngine();
 };
 ConwayGrid.prototype.initialize=function(seedPct){
 	var gridsize = this.size;
@@ -71,4 +72,29 @@ ConwayGrid.prototype.getLiveNeighbours = function(row,cell){
 	}
 
 	return count;
+};
+
+ConwayGrid.prototype.shouldCellChange  = function(i,j,grid){
+		var cell = grid[i][j];
+		var	neighbours = this.getLiveNeighbours(i,j);
+		return this.ruleEngine.shouldCellChange(i,j,cell,neighbours);
+	};
+
+ConwayGrid.prototype.process = function(){
+	var grid = this.rows;
+	var	 changelist = [];
+	for(var i=0; i < grid.length; i++){
+		for(var j=0; j < grid[i].length;j++){
+			var result = this.shouldCellChange(i,j,grid);
+			if(result){
+				changelist.push(result);
+			}
+		}
+	}
+	
+	for(var n=0; n < changelist.length; n++){
+		this.toggleCell(changelist[n].row, changelist[n].cell);
+	}
+	
+	return changelist.length;
 };
