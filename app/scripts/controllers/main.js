@@ -1,3 +1,4 @@
+/* global ConwayGrid */
 'use strict';
 
 angular.module('angularconwayApp')
@@ -6,7 +7,6 @@ angular.module('angularconwayApp')
 	$scope.iterations = 0;
 	$scope.rows = [];
 
-	var ruleEngine = new ConwayRuleEngine();
 	$scope.grid = new ConwayGrid(80);
 	$scope.grid.initialize($scope.seedpct);
 
@@ -16,7 +16,7 @@ angular.module('angularconwayApp')
 
 	var process =function(){
 		$scope.grid.process();
-	}
+	};
 
 	$scope.toggle = function(row,cell){
 		$scope.grid.toggleCell(row,cell);
