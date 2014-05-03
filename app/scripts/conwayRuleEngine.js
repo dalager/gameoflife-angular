@@ -1,3 +1,5 @@
+'use strict';
+
 var ConwayRuleEngine = function(){
 };
 ConwayRuleEngine.prototype.shouldCellChange = function(i,j,cell,neighbours){
