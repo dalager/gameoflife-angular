@@ -1,46 +1,36 @@
 'use strict';
 
-
-
-
-angular.module('angularconwayApp')
-  .controller('MainCtrl', function ($scope,$log,$interval) {
-	$scope.seedpct = 64;
-	$scope.iterations = 0;
-	$scope.rows = [];
-	$scope.runlog = [];
-
-	var reseed = function(){
-		for(var i=0;i<$scope.rows.length;i++){
-			for(var j=0;j<$scope.rows[i].length;j++){
-				$scope.rows[i][j].alive=(Math.random()*100)<$scope.seedpct;
-			}
-		}
-	};
-	var ruleEngine;
-	var seed = function(){
-		$scope.rows =[];
-		var gridsize = 80;
+var ConwayGrid = function(size){
+	this.size = size;
+	this.rows=[];
+}
+ConwayGrid.prototype.initialize=function(seedPct){
+		var gridsize = this.size;
 		for (var i = 0; i < gridsize; i++) {
 			var row=[];
 			for (var n = 0; n < gridsize; n++) {
-				row.push({alive: (Math.random()*100)<$scope.seedpct});
+				row.push({alive: (Math.random()*100)<seedPct});
 			}
-			$scope.rows.push(row);
+			this.rows.push(row);
 		}
-		ruleEngine=new ConwayRuleEngine();
-	};
+};
 
-	seed();
+ConwayGrid.prototype.reseed = function(seedpct){
+	for(var i=0;i<this.rows.length;i++){
+		for(var j=0;j<this.rows[i].length;j++){
+			this.rows[i][j].alive=(Math.random()*100)<seedpct;
+		}
+	}
+};
 
-	var getLiveNeighbours = function(row,cell,rows){
+ConwayGrid.prototype.getLiveNeighbours = function(row,cell){
 		var count=0;
 		var notFirstCol=cell>0;
-		var notLastCol = cell<rows[0].length-1;
+		var notLastCol = cell<this.rows[0].length-1;
 
 		// top
 		if(row>0){
-			var toprow=rows[row-1];
+			var toprow=this.rows[row-1];
 			if(notFirstCol && toprow[cell-1].alive){
 				count++;
 			}
@@ -53,8 +43,8 @@ angular.module('angularconwayApp')
 		}
 		
 		// bottom
-		if(row<rows.length-1){
-			var bottomrow=rows[row+1];
+		if(row<this.rows.length-1){
+			var bottomrow=this.rows[row+1];
 			if(notFirstCol && bottomrow[cell-1].alive){
 				count++;
 			}
@@ -67,28 +57,46 @@ angular.module('angularconwayApp')
 		}
 
 		//front
-		if(notFirstCol && rows[row][cell-1].alive){
+		if(notFirstCol && this.rows[row][cell-1].alive){
 			count++;
 		}
 		
 		// back
-		if(notLastCol && rows[row][cell+1].alive){
+		if(notLastCol && this.rows[row][cell+1].alive){
 			count++;
 		}
 
 		return count;
 	};
 
+angular.module('angularconwayApp')
+  .controller('MainCtrl', function ($scope,$log,$interval) {
+	$scope.seedpct = 64;
+	$scope.iterations = 0;
+	$scope.rows = [];
+	$scope.runlog = [];
+
+	var ruleEngine=new ConwayRuleEngine();
+	$scope.grid = new ConwayGrid(80);
+	$scope.grid.initialize($scope.seedpct);
+
+	var reseed = function(){
+		$scope.grid.reseed($scope.seedpct);
+	};
+	
+	
+	
+
 	var shouldCellChange = function(i,j,grid){
 		var cell = grid[i][j];
-		var	neighbours = getLiveNeighbours(i,j,grid);
+		var	neighbours = $scope.grid.getLiveNeighbours(i,j);
 		return ruleEngine.shouldCellChange(i,j,cell,neighbours);
 	};
 
 	var process = function(){
 		$log.info('processing');
 		
-		var grid = $scope.rows;
+		var grid = $scope.grid.rows;
 		var	 changelist = [];
 		for(var i=0; i < grid.length; i++){
 			for(var j=0; j < grid[i].length;j++){
@@ -113,7 +121,7 @@ angular.module('angularconwayApp')
 
 	var toggleCell = function(row,cell){
 		//$log.info('toggle '+row + ' '+cell);
-		$scope.rows[row][cell].alive = !$scope.rows[row][cell].alive;
+		$scope.grid.rows[row][cell].alive = !$scope.grid.rows[row][cell].alive;
 	};
 
 	$scope.toggle = function(row,cell){
