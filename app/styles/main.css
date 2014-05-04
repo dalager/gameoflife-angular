@@ -1,9 +1,9 @@
-.grid{margin-top:10px;border:1px solid #ccc;width:802px;cursor: default;}
+.grid{padding-left:0;padding-right:0;margin-bottom:10px;width:722px;border:1px solid #ccc;cursor: default;}
 .grid div{display: table;}
 
 
 .grid div span{float:left; background-color:#efe;display: inline-block;
- width: 8px;height: 8px;}
+ width: 9px;height: 9px;}
 .alive{background-color: green !important;}
 
 /* Space out content a bit */
