@@ -3,8 +3,7 @@ Game of Conway's Supposedly Angular Life
 
 Implementation of the classic Game of Life in AngularJS.
 
-See it here:
+Live here: http://dalager.github.io/gameoflife-angular/
 
-http://dalager.com/kode/conway
-
+![alt tag](https://raw.githubusercontent.com/dalager/gameoflife-angular/master/app/images/screenshot.png)
 
