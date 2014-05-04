@@ -3,9 +3,7 @@
 
 angular.module('angularconwayApp')
   .controller('MainCtrl', function ($scope,$log,$interval) {
-	$scope.seedpct = 64;
-	$scope.iterations = 0;
-	$scope.rows = [];
+	$scope.seedpct = 50;
 
 	$scope.grid = new ConwayGrid(80);
 	$scope.grid.initialize($scope.seedpct);
@@ -40,7 +38,6 @@ angular.module('angularconwayApp')
 	var stop;
 	$scope.start = function(completed) {
 		if ( angular.isDefined(stop) ){ return;}
-		$scope.iterations=0;
 		stop = $interval(function() {
 			var changes = process();
 			if(changes===0){
