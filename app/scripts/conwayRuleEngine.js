@@ -15,6 +15,7 @@ ConwayRuleEngine.prototype.shouldCellChange = function(i,j,cell,neighbours){
 	//   lives on to the next generation.
 	if(cell.alive===true && (neighbours===2||neighbours===3)){
 		return null;
+		
 	}
 
 	// 3. Any live cell with more than three live neighbours dies, 
