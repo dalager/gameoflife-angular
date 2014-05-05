@@ -35,6 +35,8 @@ angular.module('angularconwayApp')
 	};
 
 
+
+	// running the thing
 	var stop;
 	$scope.start = function(completed) {
 		if ( angular.isDefined(stop) ){ return;}
