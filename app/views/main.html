@@ -3,8 +3,8 @@
 </div>
 <div class="row">
   <div class="grid col-md-8">
-    <div ng-repeat="r in grid.rows track by $index">
-      <span ng-repeat="cell in r track by $index" ng-click="toggle($parent.$index,$index)" ng-class="{alive:cell.alive}" >&nbsp;</span>
+    <div ng-repeat="row in grid.rows track by $index">
+      <span ng-repeat="cell in row track by $index" ng-click="toggle($parent.$index,$index)" ng-class="{alive:cell.alive}" >&nbsp;</span>
     </div>
   </div>
 
