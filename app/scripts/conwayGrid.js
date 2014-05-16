@@ -1,4 +1,4 @@
-/* global ConwayRuleEngine */
+/* global ConwayRuleEngine,_ */
 'use strict';
 
 var ConwayGrid = function(size){
@@ -28,6 +28,17 @@ ConwayGrid.prototype.reseed = function(seedpct){
 		}
 	}
 };
+
+ConwayGrid.prototype.load = function(data){
+	var rows = _.map(data,function(r){
+		return _.map(r,function(c){
+			return c===1?{alive:true}:{alive:false};
+		});
+	});
+	this.rows=rows;
+};
+
+
 
 ConwayGrid.prototype.getLiveNeighbours = function(row,cell){
 	var count=0;

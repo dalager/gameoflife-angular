@@ -1,4 +1,4 @@
-/* global ConwayGrid */
+/* global ConwayGrid,_ */
 'use strict';
 
 angular.module('angularconwayApp')
@@ -29,6 +29,32 @@ angular.module('angularconwayApp')
 		reseed();
 		$scope.start(donecb);
 	};
+
+	$scope.export = function(){
+		var res = _.map($scope.grid.rows,function(r){
+			return _.map(r,function(c){
+				return c.alive?1:0;
+			});
+		});
+		var hiddenElement = document.createElement('a');
+		hiddenElement.href = 'data:text/json,' + encodeURI(JSON.stringify(res));
+		hiddenElement.target = '_blank';
+		hiddenElement.download = 'conwaygrid.json';
+		hiddenElement.click();
+
+		$log.info(JSON.stringify(res));
+	};
+
+	$scope.imported={};
+	$scope.importFile = function(){
+		$log.info('loading data into grid:');
+		$log.info($scope.imported);
+		
+		$scope.grid.load(JSON.parse($scope.imported));
+	};
+
+
+
 
 	$scope.step = function(){
 		process();
@@ -61,4 +87,23 @@ angular.module('angularconwayApp')
 	$scope.$on('$destroy', function() {
 		$scope.stop();
 	});
-});
+})
+.directive('fileread', [function () {
+	return {
+		scope: {
+			fileread: '='
+		},
+		link: function (scope, element) {
+			element.bind('change', function (changeEvent) {
+				var reader = new FileReader();
+				reader.onload = function (loadEvent) {
+					scope.$apply(function () {
+						scope.fileread = loadEvent.target.result;
+						console.log(scope.fileread);
+					});
+				};
+				reader.readAsText(changeEvent.target.files[0]);
+			});
+		}
+	};
+}]);

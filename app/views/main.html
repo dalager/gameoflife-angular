@@ -12,12 +12,15 @@
   <div class="row">
     <div class="col-md-7">
       <button class="btn btn-primary" ng-click="start()">Start</button>
-      <button class="btn btn-warning" ng-click="stop()">Stop</button>
+      <button class="btn btn-warning" ng-click="stop()">Pause</button>
       <button class="btn btn-success" ng-click="restart()">Restart</button>
+      <button class="btn btn-sm" ng-click="step();">Step forward</button>
+      
     </div>
-    <div class="col-md-3">Seed pct:</div>
-    <div class="col-md-2">
-        <input style="width:50px;" class="form-control" ng-model="seedpct">
+    <div class="col-xs-2">Seed pct:</div>
+    <div class="col-xs-3">
+        <input class="form-control" ng-model="seedpct">
+
     </div>
   </div>
 
@@ -31,11 +34,33 @@
     <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
     <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
   </ol>
+
+
+  <h4>Export</h4>
+  <p>If you like creating your own patterns, you can export and import the grid.</p>
+<div class="row">
+<div class="col-xs-4">
+      <button class="btn btn-sm" ng-click="export();" >Export pattern</button>
+    </div>
+  <div class="col-xs-8">
+    The grid will be saved as .json file
+  </div>
+</div>
+<h4>Import</h4>
+<div class="well">
+  <div>
+     <input type="file" fileread="imported" class="form-control" />
+  </div>
+  <div>
+    <button class="btn btn-sm" ng-click="importFile();" >Load file into grid</button>    
   </div>
 </div>
 
 
-<button class="btn" ng-click="step();">Step forward</button>
+</div>
+
+
+
 
 <div class="footer">
   <p><a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway's Game of Life</a> in JavaScript with <span class="glyphicon glyphicon-heart"></span> from <a href="http://twitter.com/dalager">@dalager</a> and <a href="https://github.com/dalager/gameoflife-angular">source here</a></p>
