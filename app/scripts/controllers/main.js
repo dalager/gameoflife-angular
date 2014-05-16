@@ -2,11 +2,15 @@
 'use strict';
 
 angular.module('angularconwayApp')
-  .controller('MainCtrl', function ($scope,$log,$interval) {
+  .controller('MainCtrl', function ($scope,$log,$interval,$http) {
 	$scope.seedpct = 50;
 
 	$scope.grid = new ConwayGrid(80);
-	$scope.grid.initialize($scope.seedpct);
+	$http.get('patterns/spaceinvader.js').success(function(result){
+		$scope.grid.load(result);
+	});
+
+//	$scope.grid.initialize($scope.seedpct);
 
 	var reseed = function(){
 		$scope.grid.reseed($scope.seedpct);
