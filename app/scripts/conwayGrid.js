@@ -40,82 +40,47 @@ ConwayGrid.prototype.load = function(data){
 };
 
 
-
+ConwayGrid.prototype.countFor=function (r,c){
+		return this.rows[r][c].alive===true?1:0;
+	};
 ConwayGrid.prototype.getLiveNeighbours = function(row,cell){
-	var count=0;
-	var notFirstCol=cell>0;
-	var notLastCol = cell<this.rows[0].length-1;
-	// top
-	if(row>0){
-		var toprow=this.rows[row-1];
-		if(notFirstCol && toprow[cell-1].alive){
-			count++;
-		}else if(!notFirstCol){
-			count = count + this.rows[row][this.rows[0].length-1].alive?1:0;
-		}
+	var count = 0;
+	var firstRow = row === 0;
+	var lastRow = row === this.rows.length-1;
+	var firstCell = cell===0;
+	var lastCell = cell===this.rows[0].length-1;
 
-		if(toprow[cell].alive){
-			count++;
-		}
-		if(notLastCol && toprow[cell+1].alive){
-			count++;
-		}
-	}else if(row===0){
-		// wrap bottom
-		// get bottom row
-		var lastrow = this.rows[this.rows.length-1];
-		if(notFirstCol && lastrow[cell-1].alive){
-			count++;
-		}
-		if(lastrow[cell].alive){
-			count++;
-		}
-		if(notLastCol && lastrow[cell+1].alive){
-			count++;
-		}
+	// offsetting indices to wrap
+	var bottomRowIndex = lastRow ? 0 :  (row+1);
+	var topRowIndex = firstRow ? this.rows.length-1 : (row-1);
+	var nextCellIndex = lastCell ? 0 : (cell+1);
+	var prevCellIndex = firstCell ? this.rows[0].length-1 : (cell-1);
 
-	}
+	//var _t=this;
+	// N
+	count += this.countFor(topRowIndex,cell);
+
+	// S
+	count += this.countFor(bottomRowIndex,cell);
+
+	// E
+	count += this.countFor(row,nextCellIndex);
+
+	// NE
+	count += this.countFor(topRowIndex,nextCellIndex);
+
+	// SE
+	count += this.countFor(bottomRowIndex,nextCellIndex);
+
+	// W 
+	count += this.countFor(row,prevCellIndex);
+
+	// NW
+	count += this.countFor(topRowIndex,prevCellIndex);
 	
-	// bottom
-	if(row<this.rows.length-1){
-		var bottomrow=this.rows[row+1];
-		if(notFirstCol && bottomrow[cell-1].alive){
-			count++;
-		}
-		if(bottomrow[cell].alive){
-			count++;
-		}
-		if(notLastCol && bottomrow[cell+1].alive){
-			count++;
-		}
-	}else if( row===this.rows.length-1){
-		if(notFirstCol && this.rows[0][cell-1].alive){
-			count++;
-		}
-		if(this.rows[0][cell].alive){
-			count++;
-		}
-		if(notLastCol && this.rows[0][cell+1].alive){
-			count++;
-		}
-	}
-
-	//front
-	if(notFirstCol && this.rows[row][cell-1].alive){
-		count++;
-	}
+	// SW
+	count += this.countFor(bottomRowIndex,prevCellIndex);
 	
-	// back
-	if(notLastCol && this.rows[row][cell+1].alive){
-		count++;
-	}
-
-	if(!notFirstCol){
-		// first col
-
-	}
-
-
 	return count;
 };
 
