@@ -8,6 +8,88 @@ describe('ConwayGrid',function(){
 });
 
 
+describe('ConwayGrid.getLiveNeighbours',function(){
+	it('should return zero when surrounded by zeros',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[0,0,0],
+			[0,1,0],
+			[0,0,0]
+		]);
+		expect(grid.getLiveNeighbours(1,1)).toEqual(0);
+	});
+
+	it('should return three when topped by live cells',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[1,1,1],
+			[0,0,0],
+			[0,0,0]
+		]);
+		expect(grid.getLiveNeighbours(1,1)).toEqual(3);
+	});
+
+	it('should return three when lower row is live cells',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[0,0,0],
+			[0,0,0],
+			[1,1,1]
+		]);
+		expect(grid.getLiveNeighbours(1,1)).toEqual(3);
+	});
+
+	it('should return three when left col is live cells',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[1,0,0],
+			[1,0,0],
+			[1,0,0]
+		]);
+		expect(grid.getLiveNeighbours(1,1)).toEqual(3);
+	});
+
+	it('should return three when right col is live cells',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[0,0,1],
+			[0,0,1],
+			[0,0,1]
+		]);
+		expect(grid.getLiveNeighbours(1,1)).toEqual(3);
+	});
+
+	it('should topwrap, return bottom if topmost row',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[0,0,0],
+			[0,0,0],
+			[1,1,1]
+		]);
+		expect(grid.getLiveNeighbours(0,1)).toEqual(3);
+	});
+
+	it('should bottomwrap, return top if last row',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[1,1,1],
+			[0,0,0],
+			[0,0,0]
+		]);
+		expect(grid.getLiveNeighbours(2,1)).toEqual(3);
+	});
+
+	/*it('should leftwrap, return rightmost col if first col',function(){
+		var grid = new ConwayGrid();
+		grid.load([
+			[0,0,1],
+			[0,0,1],
+			[0,0,1]
+		]);
+		expect(grid.getLiveNeighbours(1,0)).toEqual(3);
+	});*/
+});
+
 describe('ConwayGrid.load',function(){
 	it('should load the same number of rows as given',function(){
 		var grid = new ConwayGrid();
@@ -42,8 +124,6 @@ describe('ConwayGrid.load',function(){
 		expect(grid.rows[0].length).toEqual(1);
 		expect(grid.rows[0][0].alive).toEqual(true);
 	});
-	
-
 });
 
 

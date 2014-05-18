@@ -6,6 +6,7 @@ var ConwayGrid = function(size){
 	this.rows=[];
 	this.ruleEngine = new ConwayRuleEngine();
 };
+
 ConwayGrid.prototype.initialize=function(seedPct){
 	var gridsize = this.size;
 	for (var i = 0; i < gridsize; i++) {
@@ -44,19 +45,35 @@ ConwayGrid.prototype.getLiveNeighbours = function(row,cell){
 	var count=0;
 	var notFirstCol=cell>0;
 	var notLastCol = cell<this.rows[0].length-1;
-
 	// top
 	if(row>0){
 		var toprow=this.rows[row-1];
 		if(notFirstCol && toprow[cell-1].alive){
 			count++;
+		}else if(!notFirstCol){
+			count = count + this.rows[row][this.rows[0].length-1].alive?1:0;
 		}
+
 		if(toprow[cell].alive){
 			count++;
 		}
 		if(notLastCol && toprow[cell+1].alive){
 			count++;
 		}
+	}else if(row===0){
+		// wrap bottom
+		// get bottom row
+		var lastrow = this.rows[this.rows.length-1];
+		if(notFirstCol && lastrow[cell-1].alive){
+			count++;
+		}
+		if(lastrow[cell].alive){
+			count++;
+		}
+		if(notLastCol && lastrow[cell+1].alive){
+			count++;
+		}
+
 	}
 	
 	// bottom
@@ -71,6 +88,16 @@ ConwayGrid.prototype.getLiveNeighbours = function(row,cell){
 		if(notLastCol && bottomrow[cell+1].alive){
 			count++;
 		}
+	}else if( row===this.rows.length-1){
+		if(notFirstCol && this.rows[0][cell-1].alive){
+			count++;
+		}
+		if(this.rows[0][cell].alive){
+			count++;
+		}
+		if(notLastCol && this.rows[0][cell+1].alive){
+			count++;
+		}
 	}
 
 	//front
@@ -82,6 +109,12 @@ ConwayGrid.prototype.getLiveNeighbours = function(row,cell){
 	if(notLastCol && this.rows[row][cell+1].alive){
 		count++;
 	}
+
+	if(!notFirstCol){
+		// first col
+
+	}
+
 
 	return count;
 };
